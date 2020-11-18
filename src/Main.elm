@@ -18,10 +18,12 @@ type alias Model =
 
 
 
+-- need to pattern match block in update. DONE!
 -- wyatt is simply an x,y... block is the length of a side and then x,y
 --Update--
 
 
+update : Computer -> Model -> Model
 update computer model =
     let
         ( x, y ) =
@@ -32,6 +34,7 @@ update computer model =
             ( x + toX computer.keyboard
             , y + toY computer.keyboard
             )
+        , block = ( 100, 0, -100 )
     }
 
 
@@ -48,25 +51,28 @@ view computer model =
     [ myWyatt -100
         |> move x y
         |> scale 0.5
-    , theGround 0
-        |> moveDown 385
     , theBlocks
+    , theGround computer |> moveDown 385
     ]
+
+
+
+-- added computer.width
 
 
 theGround computer =
     group
-        [ rectangle lightGreen 10000 500
+        [ rectangle lightGreen computer.screen.width 500
         ]
 
 
 theBlocks =
     group
         [ square darkPurple 30 |> moveUp 265 |> moveLeft 180
-        , square darkPurple 30 |> moveUp 265 |> moveRight 40
+        , square darkPurple 30 |> moveUp 265 |> moveRight 80
         , square darkPurple 30 |> moveUp 265 |> moveRight 280
-        , square darkPurple 30 |> moveUp 450 |> moveLeft 80
-        , square darkPurple 30 |> moveUp 450 |> moveRight 180
+        , square darkPurple 30 |> moveUp 450 |> moveLeft 180
+        , square darkPurple 30 |> moveUp 450 |> moveRight 80
         ]
 
 
