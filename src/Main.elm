@@ -4,29 +4,61 @@ import Playground exposing (..)
 
 
 main =
-    game view update ( 0, 0 )
+    game view update { wyatt = ( -300, 0 ) }
 
 
-view computer ( x, y ) =
+
+--Model--
+
+
+type alias Model =
+    { wyatt : ( Number, Number ) }
+
+
+
+--Update--
+
+
+update computer model =
+    let
+        ( x, y ) =
+            model.wyatt
+    in
+    { wyatt =
+        ( x + toX computer.keyboard
+        , y + toY computer.keyboard
+        )
+    }
+
+
+
+-- View --
+
+
+view : Computer -> Model -> List Shape
+view computer model =
+    let
+        ( x, y ) =
+            model.wyatt
+    in
     [ myWyatt -100
         |> move x y
         |> scale 0.5
-        |> moveRight -300
     , theGround 0
         |> moveDown 385
+    , theBlocks
     ]
-
-
-update computer ( x, y ) =
-    ( x + toX computer.keyboard
-    , y + toY computer.keyboard
-    )
 
 
 theGround computer =
     group
         [ rectangle lightGreen 10000 500
-        , square darkPurple 30 |> moveUp 265 |> moveLeft 180
+        ]
+
+
+theBlocks =
+    group
+        [ square darkPurple 30 |> moveUp 265 |> moveLeft 180
         , square darkPurple 30 |> moveUp 265 |> moveRight 40
         , square darkPurple 30 |> moveUp 265 |> moveRight 280
         , square darkPurple 30 |> moveUp 450 |> moveLeft 80
