@@ -4,7 +4,7 @@ import Playground exposing (..)
 
 
 main =
-    game view update { wyatt = ( -300, 0 ) }
+    game view update { wyatt = ( -300, 0 ), block = ( 5, 0, 0 ) }
 
 
 
@@ -12,10 +12,13 @@ main =
 
 
 type alias Model =
-    { wyatt : ( Number, Number ) }
+    { wyatt : ( Number, Number )
+    , block : ( Number, Number, Number )
+    }
 
 
 
+-- wyatt is simply an x,y... block is the length of a side and then x,y
 --Update--
 
 
@@ -24,10 +27,11 @@ update computer model =
         ( x, y ) =
             model.wyatt
     in
-    { wyatt =
-        ( x + toX computer.keyboard
-        , y + toY computer.keyboard
-        )
+    { model
+        | wyatt =
+            ( x + toX computer.keyboard
+            , y + toY computer.keyboard
+            )
     }
 
 
