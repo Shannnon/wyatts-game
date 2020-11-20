@@ -34,7 +34,7 @@ update computer model =
             ( x + toX computer.keyboard
             , y + toY computer.keyboard
             )
-        , block = ( 100, 0, -100 )
+        , block = ( 50, 0, -100 )
     }
 
 
@@ -51,9 +51,15 @@ view computer model =
     [ myWyatt -100
         |> move x y
         |> scale 0.5
+    , theBlock model.block
     , theBlocks
     , theGround computer |> moveDown 385
     ]
+
+
+theBlock ( length, x, y ) =
+    group
+        [ square orange length ]
 
 
 
