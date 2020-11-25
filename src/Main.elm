@@ -4,22 +4,31 @@ import Playground exposing (..)
 
 
 main =
-    game view update { wyatt = ( -300, 0 ), block = ( 5, 0, 0 ) }
+    game view update initModel
 
 
 
 --Model--
 
 
-type alias Model =
-    { wyatt : ( Number, Number )
-    , block : ( Number, Number, Number )
+initModel : Model
+initModel =
+    { wyatt = ( -300, 0 )
+    , block = ( 50, 10, 20 )
     }
 
 
+type alias Model =
+    { wyatt : ( Number, Number )
+    , block : ( Length, Number, Number )
+    }
 
--- need to pattern match block in update. DONE!
--- wyatt is simply an x,y... block is the length of a side and then x,y
+
+type alias Length =
+    Number
+
+
+
 --Update--
 
 
@@ -28,14 +37,52 @@ update computer model =
     let
         ( x, y ) =
             model.wyatt
-    in
-    { model
-        | wyatt =
+
+        updatedWyatt =
             ( x + toX computer.keyboard
             , y + toY computer.keyboard
             )
-        , block = ( 50, 0, -100 )
+
+        wyattBubble =
+            bubbleizeWyatt updatedWyatt
+
+        blockBubble =
+            bubbleizeBlock model.block
+
+        resetWyattOrContinue =
+            updateTheyHit wyattBubble blockBubble updatedWyatt
+    in
+    { model
+        | wyatt = resetWyattOrContinue
     }
+
+
+updateTheyHit : Bubble -> Bubble -> ( Number, Number ) -> ( Number, Number )
+updateTheyHit wyattBubble blockBubble newWyatt =
+    if bubblesHit wyattBubble blockBubble then
+        initModel.wyatt
+
+    else
+        newWyatt
+
+
+bubblesHit : Bubble -> Bubble -> Bool
+bubblesHit bubbleOne bubbleTwo =
+    True
+
+
+type alias Bubble =
+    { top : Number, right : Number, left : Number, bottom : Number }
+
+
+bubbleizeWyatt : ( Number, Number ) -> Bubble
+bubbleizeWyatt ( x, y ) =
+    { top = y + 20, right = x + 10, left = x - 10, bottom = y - 20 }
+
+
+bubbleizeBlock : ( Number, Number, Number ) -> Bubble
+bubbleizeBlock ( length, x, y ) =
+    { top = y + 40, right = x + 15, left = x - 15, bottom = y - 40 }
 
 
 
@@ -59,7 +106,7 @@ view computer model =
 
 theBlock ( length, x, y ) =
     group
-        [ square orange length ]
+        [ square orange length |> move x y ]
 
 
 
