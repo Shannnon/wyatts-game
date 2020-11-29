@@ -1,7 +1,9 @@
 module Tests exposing (..)
 
-import Test exposing (..)
 import Expect
+import Main exposing (..)
+import Test exposing (..)
+
 
 
 -- Check out https://package.elm-lang.org/packages/elm-explorations/test/latest to learn more about testing in Elm!
@@ -9,14 +11,32 @@ import Expect
 
 all : Test
 all =
-    describe "A Test Suite"
-        [ test "Addition" <|
+    describe "bubblesHit"
+        [ test "returns true when passed same bubble because duh" <|
             \_ ->
-                Expect.equal 10 (3 + 7)
-        , test "String.left" <|
+                let
+                    pooperStein =
+                        { top = 5, right = 5, left = 0, bottom = 0 }
+                in
+                Expect.true "same bubble should have an intersection with  itself" (bubblesHit pooperStein pooperStein)
+        , test "returns false when they do not intersect" <|
             \_ ->
-                Expect.equal "a" (String.left 1 "abcdefg")
-        , test "This test should fail" <|
+                let
+                    bubble1 =
+                        { top = 5, right = 5, left = 4, bottom = 4 }
+
+                    bubble2 =
+                        { top = 3, right = 3, left = 2, bottom = 2 }
+                in
+                Expect.false "cmon man" (bubblesHit bubble1 bubble2)
+        , test "returns true when they intersect" <|
             \_ ->
-                Expect.fail "failed as expected!"
+                let
+                    brown =
+                        { top = 5, right = 5, left = 0, bottom = 0 }
+
+                    pink =
+                        { top = 3, right = 3, left = 2, bottom = 2 }
+                in
+                Expect.true "cmon man" (bubblesHit brown pink)
         ]

@@ -1,4 +1,4 @@
-module Main exposing (main)
+module Main exposing (Bubble, bubblesHit, main)
 
 import Playground exposing (..)
 
