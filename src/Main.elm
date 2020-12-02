@@ -67,8 +67,37 @@ updateTheyHit wyattBubble blockBubble newWyatt =
 
 
 bubblesHit : Bubble -> Bubble -> Bool
-bubblesHit bubbleOne bubbleTwo =
-    True
+bubblesHit brown pink =
+    let
+        xs =
+            getRange brown.left brown.right
+
+        ys =
+            getRange brown.bottom brown.top
+
+        brownCoords =
+            List.map (\x -> List.map (\y -> ( x, y )) ys) xs
+    in
+    brownCoords
+        |> List.concat
+        |> List.any (pointInBubble pink)
+
+
+pointInBubble : Bubble -> ( Int, Int ) -> Bool
+pointInBubble bubble ( x0, y0 ) =
+    let
+        x =
+            toFloat x0
+
+        y =
+            toFloat y0
+    in
+    x > bubble.left && x < bubble.right && y > bubble.bottom && y < bubble.top
+
+
+getRange : Number -> Number -> List Int
+getRange x y =
+    List.range (floor x) (ceiling y)
 
 
 type alias Bubble =

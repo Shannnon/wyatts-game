@@ -29,7 +29,7 @@ all =
                         { top = 3, right = 3, left = 2, bottom = 2 }
                 in
                 Expect.false "cmon man" (bubblesHit bubble1 bubble2)
-        , test "returns true when they intersect" <|
+        , test "returns true when they have edges that intersect" <|
             \_ ->
                 let
                     brown =
@@ -37,6 +37,16 @@ all =
 
                     pink =
                         { top = 3, right = 3, left = 2, bottom = 2 }
+                in
+                Expect.equal True (bubblesHit brown pink)
+        , test "returns true when they have points in them that intersect" <|
+            \_ ->
+                let
+                    brown =
+                        { top = 5, right = 5, left = 0, bottom = 0 }
+
+                    pink =
+                        { top = 3, right = 3, left = 1, bottom = 1 }
                 in
                 Expect.true "cmon man" (bubblesHit brown pink)
         ]
